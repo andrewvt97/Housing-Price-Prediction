@@ -1,2 +1,2 @@
-# Bus-Optimization-Project
-Using machine learning to solve the problem of minimizing waiting times for bus passengers.
+# Housing-Price-Prediction
+Using machine learning to create a model to predict house prices based on features.
