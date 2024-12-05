@@ -167,6 +167,9 @@ train_set = pd.get_dummies(train_set, columns=['building_class_category'], prefi
 train_set['gross_square_feet'] = pd.to_numeric(train_set['gross_square_feet'], errors='coerce')
 
 train_set.dropna(subset=['gross_square_feet'], inplace=True) # drops around 50000 rows
+train_set = train_set[train_set['gross_square_feet'] != 0]
+print(train_set['gross_square_feet'].describe())
+
 
 
 
@@ -309,6 +312,8 @@ train_set['gross_square_feet'] = np.log1p(train_set['gross_square_feet'])
 train_set['gross_square_feet'] = scaler.fit_transform(train_set[['gross_square_feet']])
 
 
+
+
 # SALE YEAR
 train_set['years_since_sale'] = np.log1p(train_set['years_since_sale'])
 train_set['years_since_sale'] = scaler.fit_transform(train_set[['years_since_sale']])
@@ -317,17 +322,6 @@ train_set['years_since_sale'] = scaler.fit_transform(train_set[['years_since_sal
 print("Basic Statistics for years_since_sale:")
 print(train_set['years_since_sale'].describe())
 
-# Check for NaN or infinite values
-print("\nNaN values in years_since_sale:", train_set['years_since_sale'].isna().sum())
-print("Infinite values in years_since_sale:", np.isinf(train_set['years_since_sale']).sum())
-
-# Display unique values and their counts (if necessary)
-print("\nUnique values in years_since_sale:")
-print(train_set['years_since_sale'].value_counts())
-
-# Display a sample of the column to inspect the data
-print("\nSample of years_since_sale values:")
-print(train_set['years_since_sale'].head(10))
 
 target_correlation = pd.read_csv('target_correlation.csv', index_col=0)
 
@@ -359,8 +353,9 @@ print(f"Remaining columns: {columns_to_keep}")
 print(train_set.shape)
 
 
-# train_set = train_set[train_set['gross_square_feet'] != 0]
+
 # Prepare features and labels
+print(train_set.shape)
 features = train_set.drop(columns=['sale_price', 'log_sale_price'])  # Drop both original and log-transformed
 # Convert scaled features back to a DataFrame for inspection
 # features_df = pd.DataFrame(train_set, columns=train_set.drop(columns=['sale_price', 'log_sale_price']).columns)
